@@ -21,7 +21,7 @@ public class OmniDrive {
     private ArrayList<DcMotor> driveMotors;
     private ArrayList<int[]> script;
     private int ticks;
-    private static double SPEED = 0.5;
+    private static double SPEED = 0.2;
 
 //Constructors
 
@@ -40,8 +40,8 @@ public class OmniDrive {
             motor.setDirection(DcMotor.Direction.FORWARD);
         }
 
-        motorA.setDirection(DcMotor.Direction.REVERSE);
-        motorB.setDirection(DcMotor.Direction.REVERSE);
+        //motorA.setDirection(DcMotor.Direction.REVERSE);
+        //motorB.setDirection(DcMotor.Direction.REVERSE);
 
         pos = new Vector(0,0);
         heading = 0;
