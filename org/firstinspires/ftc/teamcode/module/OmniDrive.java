@@ -118,29 +118,29 @@ public class OmniDrive {
     public void forwardRight() {
       Util.updatePower(motorA, -SPEED);
       Util.updatePower(motorB, 0);
-      Util.updatePower(motorC, SPEED);
-      Util.updatePower(motorD, 0);
+      Util.updatePower(motorC, 0);
+      Util.updatePower(motorD, SPEED);
     }
 
     public void forwardLeft() {
       Util.updatePower(motorA, 0);
       Util.updatePower(motorB, SPEED);
-      Util.updatePower(motorC, 0);
-      Util.updatePower(motorD, -SPEED);
+      Util.updatePower(motorC, -SPEED);
+      Util.updatePower(motorD, 0);
     }
 
     public void backwardRight() {
       Util.updatePower(motorA, 0);
       Util.updatePower(motorB, -SPEED);
-      Util.updatePower(motorC, 0);
-      Util.updatePower(motorD, SPEED);
+      Util.updatePower(motorC, SPEED);
+      Util.updatePower(motorD, 0);
     }
 
     public void backwardLeft() {
       Util.updatePower(motorA, SPEED);
       Util.updatePower(motorB, 0);
-      Util.updatePower(motorC, -SPEED);
-      Util.updatePower(motorD, 0);
+      Util.updatePower(motorC, 0);
+      Util.updatePower(motorD, -SPEED);
     }
 
     public void rotRight() {

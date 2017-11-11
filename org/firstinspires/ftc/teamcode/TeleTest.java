@@ -19,31 +19,30 @@ public class TeleTest extends OpMode {
     @Override
     public void loop() {
       if(gamepad1.right_stick_y > 0.5) { //forward
-        if(gamepad1.right_stick_x > 0.5) { //right
+        if(gamepad1.right_stick_x < -0.5) { //right
           drive.forwardRight();
-        } else if(gamepad1.right_stick_x < -0.5) { //left
+      } else if(gamepad1.right_stick_x > 0.5) { //left
           drive.forwardLeft();
         } else {
           drive.forward();
-          telemetry.addData("REEE", "MOOREEER REEEEE");
         }
     } else if(gamepad1.right_stick_y < -0.5) { //backward
-        if(gamepad1.right_stick_x > 0.5) { //right
+        if(gamepad1.right_stick_x < -0.5) { //right
           drive.backwardRight();
-        } else if(gamepad1.right_stick_x < -0.5) { //left
+      } else if(gamepad1.right_stick_x > 0.5) { //left
           drive.backwardLeft();
         } else {
           drive.backward();
         }
       } else {
-        if(gamepad1.right_stick_x > 0.5) { //right
+        if(gamepad1.right_stick_x < -0.5) { //right
           drive.right();
-        } else if(gamepad1.right_stick_x < -0.5) { //left
+      } else if(gamepad1.right_stick_x > 0.5) { //left
           drive.left();
         } else {
-          if(gamepad1.left_stick_x > 0.5) { //rotate right
+          if(gamepad1.left_stick_x < -0.5) { //rotate right
             drive.rotRight();
-          } else if(gamepad1.left_stick_x < -0.5) { //rotate left
+        } else if(gamepad1.left_stick_x > 0.5) { //rotate left
             drive.rotLeft();
           } else { //stop
             drive.stop();

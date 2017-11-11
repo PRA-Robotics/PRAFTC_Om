@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -52,20 +53,24 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the  line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Template: Linear OpMode", group="Linear Opmode")  // @Autonomous(...) is the other common choice
+@TeleOp(name="Stuff", group="Linear Opmode")  // @Autonomous(...) is the other common choice
 
 public class ArmTest extends LinearOpMode {
 
     /* Declare OpMode members. */
-    private ElapsedTime runtime = new ElapsedTime();
     DcMotor waist = null;
     DcMotor shoulder = null;
     DcMotor elbow = null;
-    int motor = 1;
+    Servo claw = null;
     double motorPosition;
+    double motorPositionElbow;
     double motorSpeed = 0;
+    double motorSpeedElbow = 0;
     double start;
     double elapsed;
+    double clawPosition = 0;
+    boolean clawClosed = false;
+    int clawDelay = 0;
 
     @Override
 
@@ -79,12 +84,13 @@ public class ArmTest extends LinearOpMode {
         waist  = hardwareMap.dcMotor.get("waist");
         shoulder = hardwareMap.dcMotor.get("shoulder");
         elbow = hardwareMap.dcMotor.get("elbow");
+        claw = hardwareMap.servo.get("claw");
 
         // eg: Set the drive motor directions:
         // "Reverse" the motor that runs backwards when connected directly to the battery
         //waist.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        shoulder.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        waist.setDirection(DcMotor.Direction.FORWARD);
+        shoulder.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        elbow.setDirection(DcMotor.Direction.REVERSE);
         
         shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shoulder.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -93,24 +99,24 @@ public class ArmTest extends LinearOpMode {
         elbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
-        runtime.reset();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             start = System.currentTimeMillis();
             double shoulderEncoder = shoulder.getCurrentPosition();
+            double elbowEncoder = elbow.getCurrentPosition();
             double distanceFromBeingGood = (motorPosition-shoulderEncoder);
-            telemetry.addData("target-value:", motorPosition);
+            double distanceFromBeingGoodElbow = (motorPositionElbow-elbowEncoder);
+            telemetry.addData("target-value:", motorPositionElbow);
             telemetry.addData("elapsed", elapsed);
-            telemetry.addData("shoulder-encoder", shoulderEncoder);
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData("shoulder-encoder", elbowEncoder);
             telemetry.update();
 
             // eg: Run wheels in tank mode (note: The joystick goes negative when pushed forwards)
-                waist.setPower(-(gamepad1.right_trigger *.5));
-                waist.setPower((gamepad1.left_trigger*.75));
+                waist.setPower(-(gamepad1.right_trigger));
+                waist.setPower((gamepad1.left_trigger));
                 //shoulder.setPower(gamepad1.left_stick_y *.1);
-                elbow.setPower(gamepad1.right_stick_y * .05);
+                //elbow.setPower(gamepad1.right_stick_y * .05);
                 
                 if(gamepad1.left_stick_y > 0.1){
                         motorPosition = (motorPosition + (0.075 * elapsed));
@@ -130,14 +136,42 @@ public class ArmTest extends LinearOpMode {
                 if(distanceFromBeingGood>40|| distanceFromBeingGood<-40){
                     motorSpeed = 0.1;
                 }
-                if(distanceFromBeingGood>0&& distanceFromBeingGood<0){                
-                    motorSpeed = 0;
+                
+                if(shoulderEncoder <-500 && shoulderEncoder >-1200){
+                    motorSpeed = motorSpeed * 1;
                 }
                 //
-                if(shoulderEncoder >-500 || shoulderEncoder <-1200){
-                    motorSpeed = motorSpeed * 1;
+                if(gamepad1.right_stick_y > 0.1){
+                        motorPositionElbow = (motorPositionElbow + (0.075 * elapsed));
+                }
+                if(-gamepad1.right_stick_y > 0.1){
+                        motorPositionElbow = (motorPositionElbow - (0.075 * elapsed));
+                }
+                if(motorPositionElbow + 5> elbowEncoder){
+                    elbow.setPower(motorSpeedElbow);
+                }
+                if(motorPositionElbow < elbowEncoder + 5){
+                    elbow.setPower(-motorSpeedElbow);
+                }
+                if(distanceFromBeingGoodElbow<40 &&distanceFromBeingGoodElbow>0 ||distanceFromBeingGoodElbow>-40 &&distanceFromBeingGoodElbow<-0){
+                    motorSpeedElbow = 0.075;
+                }
+                if(distanceFromBeingGoodElbow>40|| distanceFromBeingGoodElbow<-40){
+                    motorSpeedElbow = 0.1;
+                }
+                
+                if(elbowEncoder <-500 && elbowEncoder >-1200){
+                    motorSpeedElbow = motorSpeedElbow * .75;
+                }
+                if(gamepad1.a && clawDelay > 50){
+                    clawClosed = !clawClosed;
+                    clawDelay = 0;
+                }
+                clawDelay ++;
+                if(clawClosed){
+                    claw.setPosition(.6);
                 }else{
-                    motorSpeed = motorSpeed * .5;
+                    claw.setPosition(.75);
                 }
                 elapsed = (System.currentTimeMillis() - start) + 1;
                 //
