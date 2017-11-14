@@ -24,8 +24,8 @@ public class JointedArm {
     private double distanceFromBeingGoodShoulder;
     private double distanceFromBeingGoodElbow;
 
-    private static double SHOULDER_SCALE = 0.075;
-    private static double ELBOW_SCALE = 0.075;
+    private static double SHOULDER_SCALE = 0.3;
+    private static double ELBOW_SCALE = 0.75;
 
     public JointedArm (HardwareMap map) {
             start = 0;
@@ -36,14 +36,14 @@ public class JointedArm {
             elbow = map.dcMotor.get("elbow");
             claw = map.servo.get("claw");
 
-            shoulder.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-            elbow.setDirection(DcMotor.Direction.REVERSE);
+            shoulder.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+            elbow.setDirection(DcMotor.Direction.FORWARD);
 
             Util.initMotor(shoulder);
             Util.initMotor(elbow);
     }
 
-    public void tick() {
+    public String tick() {
         elapsed = start - System.currentTimeMillis();
         shoulderEncoder = shoulder.getCurrentPosition();
         elbowEncoder = elbow.getCurrentPosition();
@@ -90,6 +90,7 @@ public class JointedArm {
         }
 
         start = System.currentTimeMillis();
+        return ("" + motorPositionShoulder);
     }
 
     public void waistRotate(double p) {

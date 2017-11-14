@@ -15,7 +15,6 @@ public class TeleTest extends OpMode {
     public void init() {
         drive = new OmniDrive(hardwareMap);
         arm = new JointedArm(hardwareMap);
-        telemetry.addData("Directions: ", "" + drive.getDirections());
     }
 
     @Override
@@ -34,7 +33,7 @@ public class TeleTest extends OpMode {
           arm.toggleClaw();
       }
 
-      arm.tick();
+      telemetry.addData("Debug: " , arm.tick());
 
       if(gamepad1.right_stick_y > 0.5) { //forward
         if(gamepad1.right_stick_x < -0.5) { //right
