@@ -37,6 +37,7 @@ public class OmniDrive {
         driveMotors.add(motorD);
         for (DcMotor motor : driveMotors) {
             Util.initMotor(motor);
+            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
             motor.setDirection(DcMotor.Direction.FORWARD);
         }
 
