@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class JointedArm {
-    private DcMotor waist = null;
     private DcMotor shoulder = null;
     private DcMotor elbow = null;
     private Servo claw = null;
@@ -31,7 +30,6 @@ public class JointedArm {
             start = 0;
             elapsed = 0;
 
-            waist  = map.dcMotor.get("waist");
             shoulder = map.dcMotor.get("shoulder");
             elbow = map.dcMotor.get("elbow");
             claw = map.servo.get("claw");
@@ -45,6 +43,7 @@ public class JointedArm {
 
     public String tick() {
         elapsed = start - System.currentTimeMillis();
+        
         shoulderEncoder = shoulder.getCurrentPosition();
         elbowEncoder = elbow.getCurrentPosition();
         distanceFromBeingGoodShoulder = (motorPositionShoulder - shoulderEncoder);
@@ -90,19 +89,30 @@ public class JointedArm {
         }
 
         start = System.currentTimeMillis();
-        return ("" + motorPositionShoulder);
-    }
 
-    public void waistRotate(double p) {
-        Util.updatePower(waist, p);
+        return ("");//Debugging
     }
 
     public void changeShoulderPosition(double d) {
         motorPositionShoulder += (SHOULDER_SCALE * elapsed) * ((d >= 0) ? 1 : -1);
+        /*
+        if(motorPositionShoulder > 0) {
+            motorPositionShoulder = 0;
+        } else if(motorPositionShoulder < -1000) {
+            motorPositionShoulder = -1000;
+        }
+        */
     }
 
     public void changeElbowPosition(double d) {
         motorPositionElbow += (ELBOW_SCALE * elapsed) * ((d >= 0) ? 1 : -1);
+        /*
+        if(motorPositionShoulder > 1000) {
+            motorPositionShoulder = 1000;
+        } else if(motorPositionShoulder < -1000) {
+            motorPositionShoulder = -1000;
+        }
+        */
     }
 
     public void toggleClaw() {

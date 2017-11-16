@@ -19,10 +19,10 @@ public class TeleTest extends OpMode {
 
     @Override
     public void loop() {
-      arm.waistRotate(gamepad2.left_trigger - gamepad2.right_trigger);
 
       if(gamepad2.left_stick_y > .1 || gamepad2.left_stick_y < -.1) {
           arm.changeShoulderPosition(gamepad2.left_stick_y);
+          telemetry.addData("Debug: ", "" + gamepad2.left_stick_y);
       }
 
       if(gamepad2.right_stick_y > .1 || gamepad2.right_stick_y < -.1) {
@@ -33,7 +33,8 @@ public class TeleTest extends OpMode {
           arm.toggleClaw();
       }
 
-      telemetry.addData("Debug: " , arm.tick());
+      //telemetry.addData("Debug: " , arm.tick());
+      arm.tick();
 
       if(gamepad1.right_stick_y > 0.5) { //forward
         if(gamepad1.right_stick_x < -0.5) { //right
