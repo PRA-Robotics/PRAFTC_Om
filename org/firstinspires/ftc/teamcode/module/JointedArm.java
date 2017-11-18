@@ -25,6 +25,8 @@ public class JointedArm {
 
     private static double SHOULDER_SCALE = 0.3;
     private static double ELBOW_SCALE = 0.75;
+    private static final double SHOULDER_P = 0.0005;
+    private static final double ELBOW_P = 0.0005;
 
     public JointedArm (HardwareMap map) {
             start = 0;
@@ -41,9 +43,9 @@ public class JointedArm {
             Util.initMotor(elbow);
     }
 
-    public String tick() {
+    public double tick() {
         elapsed = start - System.currentTimeMillis();
-        
+
         shoulderEncoder = shoulder.getCurrentPosition();
         elbowEncoder = elbow.getCurrentPosition();
         distanceFromBeingGoodShoulder = (motorPositionShoulder - shoulderEncoder);
@@ -51,33 +53,13 @@ public class JointedArm {
 
 //shoulder
 
-        if(distanceFromBeingGoodShoulder < 40 && distanceFromBeingGoodShoulder > -40 && distanceFromBeingGoodShoulder != 0){
-            motorSpeedShoulder = 0.075;
-        }
-        if(distanceFromBeingGoodShoulder > 40|| distanceFromBeingGoodShoulder < -40){
-            motorSpeedShoulder = 0.1;
-        }
-        if(motorPositionShoulder+ 5> shoulderEncoder){
-            Util.updatePower(shoulder, motorSpeedShoulder);
-        }
-        if(motorPositionShoulder< shoulderEncoder + 5){
-            Util.updatePower(shoulder, -motorSpeedShoulder);
-        }
+        double shoulderPower = distanceFromBeingGoodShoulder * SHOULDER_P;
+        Util.updatePower(shoulder, shoulderPower);
 
 //elbow
 
-        if(motorPositionElbow + 5> elbowEncoder){
-            elbow.setPower(motorSpeedElbow);
-        }
-        if(motorPositionElbow < elbowEncoder + 5){
-            elbow.setPower(-motorSpeedElbow);
-        }
-        if(distanceFromBeingGoodElbow < 40 && distanceFromBeingGoodElbow > -40 && distanceFromBeingGoodElbow != 0){
-            motorSpeedElbow = 0.075;
-        }
-        if(distanceFromBeingGoodElbow > 40 || distanceFromBeingGoodElbow < -40){
-            motorSpeedElbow = 0.1;
-        }
+        double elbowPower = distanceFromBeingGoodElbow * ELBOW_P;
+        Util.updatePower(elbow, elbowPower);
 
 //claw
 
@@ -90,9 +72,9 @@ public class JointedArm {
 
         start = System.currentTimeMillis();
 
-        return ("");//Debugging
+        return (distanceFromBeingGoodShoulder);//Debugging
     }
-
+    /*
     public void changeShoulderPosition(double d) {
         motorPositionShoulder += (SHOULDER_SCALE * elapsed) * ((d >= 0) ? 1 : -1);
         /*
@@ -101,7 +83,7 @@ public class JointedArm {
         } else if(motorPositionShoulder < -1000) {
             motorPositionShoulder = -1000;
         }
-        */
+
     }
 
     public void changeElbowPosition(double d) {
@@ -112,7 +94,30 @@ public class JointedArm {
         } else if(motorPositionShoulder < -1000) {
             motorPositionShoulder = -1000;
         }
-        */
+
+    }
+    */
+
+    public void position(int pos){
+        switch (pos) {
+            case 1:
+                motorPositionShoulder = 0;
+                motorPositionElbow = -488;
+                break;
+            case 2:
+                motorPositionShoulder = 148;
+                motorPositionElbow = -577;
+                break;
+            case 3:
+                motorPositionShoulder = 277;
+                motorPositionElbow = -721;
+                break;
+            case 4:
+                motorPositionShoulder = 422;
+                motorPositionElbow = -852;
+                break;
+        }
+
     }
 
     public void toggleClaw() {
