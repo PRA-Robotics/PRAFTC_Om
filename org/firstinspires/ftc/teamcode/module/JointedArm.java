@@ -22,11 +22,19 @@ public class JointedArm {
     private double elbowEncoder;
     private double distanceFromBeingGoodShoulder;
     private double distanceFromBeingGoodElbow;
+    private double shoulderErrorSum = 0;
+    private double elbowErrorSum = 0;
+    private double shoulderLast = 0;
+    private double elbowLast = 0;
 
     private static double SHOULDER_SCALE = 0.3;
     private static double ELBOW_SCALE = 0.75;
-    private static final double SHOULDER_P = 0.0005;
-    private static final double ELBOW_P = 0.0005;
+    private static final double SHOULDER_P = 0.00575;
+    private static final double ELBOW_P = 0.0035;
+    private static final double SHOULDER_I = 0.0;
+    private static final double ELBOW_I = 0.0;
+    private static final double SHOULDER_D = 0.00075;
+    private static final double ELBOW_D = 0.00075;
 
     public JointedArm (HardwareMap map) {
             start = 0;
@@ -48,73 +56,52 @@ public class JointedArm {
 
         shoulderEncoder = shoulder.getCurrentPosition();
         elbowEncoder = elbow.getCurrentPosition();
+        double shoulderDiff = shoulderEncoder - shoulderLast;
+        double elbowDiff = elbowEncoder - elbowLast;
         distanceFromBeingGoodShoulder = (motorPositionShoulder - shoulderEncoder);
         distanceFromBeingGoodElbow = (motorPositionElbow - elbowEncoder);
 
-//shoulder
-
-        double shoulderPower = distanceFromBeingGoodShoulder * SHOULDER_P;
+        shoulderErrorSum += distanceFromBeingGoodShoulder;
+        double shoulderPower = (distanceFromBeingGoodShoulder * SHOULDER_P)
+            + (shoulderErrorSum * SHOULDER_I)
+            - (shoulderDiff * SHOULDER_D);
         Util.updatePower(shoulder, shoulderPower);
 
-//elbow
-
-        double elbowPower = distanceFromBeingGoodElbow * ELBOW_P;
+        elbowErrorSum += distanceFromBeingGoodElbow;
+        double elbowPower = (distanceFromBeingGoodElbow * ELBOW_P)
+            + (elbowErrorSum * ELBOW_I)
+            - (elbowDiff * ELBOW_D);
         Util.updatePower(elbow, elbowPower);
-
-//claw
 
         clawDelay ++;
         if(clawClosed){
             claw.setPosition(.6);
-        }else{
+        } else {
             claw.setPosition(.75);
         }
 
         start = System.currentTimeMillis();
 
-        return (distanceFromBeingGoodShoulder);//Debugging
+        return (elbowEncoder);
     }
-    /*
-    public void changeShoulderPosition(double d) {
-        motorPositionShoulder += (SHOULDER_SCALE * elapsed) * ((d >= 0) ? 1 : -1);
-        /*
-        if(motorPositionShoulder > 0) {
-            motorPositionShoulder = 0;
-        } else if(motorPositionShoulder < -1000) {
-            motorPositionShoulder = -1000;
-        }
-
-    }
-
-    public void changeElbowPosition(double d) {
-        motorPositionElbow += (ELBOW_SCALE * elapsed) * ((d >= 0) ? 1 : -1);
-        /*
-        if(motorPositionShoulder > 1000) {
-            motorPositionShoulder = 1000;
-        } else if(motorPositionShoulder < -1000) {
-            motorPositionShoulder = -1000;
-        }
-
-    }
-    */
 
     public void position(int pos){
         switch (pos) {
             case 1:
                 motorPositionShoulder = 0;
-                motorPositionElbow = -488;
+                motorPositionElbow = 400;
                 break;
             case 2:
-                motorPositionShoulder = 148;
-                motorPositionElbow = -577;
+                motorPositionShoulder = 200;
+                motorPositionElbow = 620;
                 break;
             case 3:
-                motorPositionShoulder = 277;
-                motorPositionElbow = -721;
+                motorPositionShoulder = 320;
+                motorPositionElbow = 780;
                 break;
             case 4:
-                motorPositionShoulder = 422;
-                motorPositionElbow = -852;
+                motorPositionShoulder = 405;
+                motorPositionElbow = 750;
                 break;
         }
 
@@ -126,65 +113,4 @@ public class JointedArm {
             clawDelay = 0;
         }
     }
-
 }
-/*
-public method update(){
-    start = System.currentTimeMillis();
-    double shoulderEncoder = shoulder.getCurrentPosition();
-    double elbowEncoder = elbow.getCurrentPosition();
-    double distanceFromBeingGoodShoulder= (motorPosition-shoulderEncoder);
-    double distanceFromBeingGoodElbow = (motorPositionElbow-elbowEncoder);
-
-        if(motorPositionShoulder+ 5> shoulderEncoder){
-            shoulder.setPower(motorSpeed);
-        }
-        if(motorPositionShoulder< shoulderEncoder + 5){
-            shoulder.setPower(-motorSpeed);
-        }
-        if(distanceFromBeingGood<40 &&distanceFromBeingGood>0 ||distanceFromBeingGood>-40 &&distanceFromBeingGood<-0){
-            motorSpeedShoulder = 0.075;
-        }
-        if(distanceFromBeingGood>40|| distanceFromBeingGood<-40){
-            motorSpeedShoulder = 0.1;
-        }
-
-        if(shoulderEncoder <-500 && shoulderEncoder >-1200){
-            motorSpeedShoulder = motorSpeedShoulder * 1;
-        }
-        //
-        if(gamepad1.right_stick_y > 0.1){
-                motorPositionElbow = (motorPositionElbow + (0.075 * elapsed));
-        }
-        if(-gamepad1.right_stick_y > 0.1){
-                motorPositionElbow = (motorPositionElbow - (0.075 * elapsed));
-        }
-        if(motorPositionElbow + 5> elbowEncoder){
-            elbow.setPower(motorSpeedElbow);
-        }
-        if(motorPositionElbow < elbowEncoder + 5){
-            elbow.setPower(-motorSpeedElbow);
-        }
-        if(distanceFromBeingGoodElbow<40 &&distanceFromBeingGoodElbow>0 ||distanceFromBeingGoodElbow>-40 &&distanceFromBeingGoodElbow<-0){
-            motorSpeedElbow = 0.075;
-        }
-        if(distanceFromBeingGoodElbow>40|| distanceFromBeingGoodElbow<-40){
-            motorSpeedElbow = 0.1;
-        }
-
-        if(elbowEncoder <-500 && elbowEncoder >-1200){
-            motorSpeedElbow = motorSpeedElbow * .75;
-        }
-        if(gamepad1.a && clawDelay > 50){
-            clawClosed = !clawClosed;
-            clawDelay = 0;
-        }
-        clawDelay ++;
-        if(clawClosed){
-            claw.setPosition(.6);
-        }else{
-            claw.setPosition(.75);
-        }
-        elapsed = (System.currentTimeMillis() - start) + 1;
-}
-*/
