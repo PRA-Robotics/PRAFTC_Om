@@ -25,6 +25,10 @@ public class OmniDrive {
     private static int TPR = 560;
     private static double D = 10.0;
 
+    public enum Direction {
+        F, FR, R, BR, B, BL, L, FL
+    }
+
 //Constructors
 
     public OmniDrive(HardwareMap map) {
@@ -150,30 +154,30 @@ public class OmniDrive {
       Util.updatePower(motorD, -SPEED);
     }
 
-    public void goDirection(int d) {
+    public void goDirection(Direction d) {
         switch(d) {
-            case 1:
+            case F:
                 this.forward();
                 break;
-            case 2:
+            case FR:
                 this.forwardRight();
                 break;
-            case 3:
+            case R:
                 this.right();
                 break;
-            case 4:
+            case BR:
                 this.backwardRight();
                 break;
-            case 5:
+            case B:
                 this.backward();
                 break;
-            case 6:
+            case BL:
                 this.backwardLeft();
                 break;
-            case 7:
+            case L:
                 this.left();
                 break;
-            case 8:
+            case FL:
                 this.forwardLeft();
                 break;
             default:

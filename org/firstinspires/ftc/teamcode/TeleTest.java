@@ -9,33 +9,33 @@ import org.firstinspires.ftc.teamcode.module.*;
 public class TeleTest extends OpMode {
 
     private OmniDrive drive;
-    private JointedArm arm;
+    //private JointedArm arm;
 
     @Override
     public void init() {
         drive = new OmniDrive(hardwareMap);
-        arm = new JointedArm(hardwareMap);
+        //arm = new JointedArm(hardwareMap);
     }
 
     @Override
     public void loop() {
       if(gamepad2.dpad_down){
-        arm.position(1);
+        //arm.position(1);
       }
       if(gamepad2.dpad_left){
-        arm.position(2);
+        //arm.position(2);
       }
       if(gamepad2.dpad_right){
-        arm.position(3);
+        //arm.position(3);
       }
       if(gamepad2.dpad_up){
-        arm.position(4);
+        //arm.position(4);
       }
       if(gamepad2.a) {
-          arm.toggleClaw();
+          //arm.toggleClaw();
       }
 
-      telemetry.addData("Elbow Enc " , arm.tick());
+      //telemetry.addData("Elbow Enc " , arm.tick());
       //arm.tick();
 
       if(gamepad1.right_stick_y > 0.5) { //forward
