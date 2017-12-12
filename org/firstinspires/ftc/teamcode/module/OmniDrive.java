@@ -14,14 +14,14 @@ public class OmniDrive {
     private Vector pos; //(x,y)
     private double heading; //0<x<2pi
     private HardwareMap map;
-    private DcMotor motorA;
-    private DcMotor motorB;
-    private DcMotor motorC;
-    private DcMotor motorD;
-    private ArrayList<DcMotor> driveMotors;
+    private Motor motorA;
+    private Motor motorB;
+    private Motor motorC;
+    private Motor motorD;
+    private ArrayList<Motor> driveMotors;
     private ArrayList<int[]> script;
     private int ticks;
-    private static double SPEED = 0.15;
+    private static double SPEED = 2;
     private static int TPR = 560;
     private static double D = 10.0;
 
@@ -32,19 +32,17 @@ public class OmniDrive {
 //Constructors
 
     public OmniDrive(HardwareMap map) {
-        motorA = (DcMotor)map.get("A");
-        motorB = (DcMotor)map.get("B");
-        motorC = (DcMotor)map.get("C");
-        motorD = (DcMotor)map.get("D");
-        driveMotors = new ArrayList<DcMotor>();
+        motorA = new Motor((DcMotor)map.get("A"));
+        motorB = new Motor((DcMotor)map.get("B"));
+        motorC = new Motor((DcMotor)map.get("C"));
+        motorD = new Motor((DcMotor)map.get("D"));
+        driveMotors = new ArrayList<Motor>();
         driveMotors.add(motorA);
         driveMotors.add(motorB);
         driveMotors.add(motorC);
         driveMotors.add(motorD);
-        for (DcMotor motor : driveMotors) {
-            Util.initMotor(motor);
-            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-            motor.setDirection(DcMotor.Direction.FORWARD);
+        for (Motor motor : driveMotors) {
+
         }
 
         //motorA.setDirection(DcMotor.Direction.REVERSE);
@@ -77,81 +75,66 @@ public class OmniDrive {
 
     }
 
-    public void resetEncoders() {
-        for (DcMotor motor : driveMotors) {
-            Util.initMotor(motor);
-        }
-    }
-
-    public double[] readWheelDist() {
-        double[] values = new double[4];
-        values[0] = D * Math.PI * motorA.getCurrentPosition() / TPR;
-        values[1] = D * Math.PI * motorB.getCurrentPosition() / TPR;
-        values[2] = D * Math.PI * motorC.getCurrentPosition() / TPR;
-        values[3] = D * Math.PI * motorD.getCurrentPosition() / TPR;
-        return values;
-    }
-
     public void stop() {
-        for (DcMotor motor : driveMotors) {
-            motor.setPower(0);
+        for (Motor motor : driveMotors) {
+            motor.updateSpeed(0);
         }
     }
 
     public void backward() {
-      Util.updatePower(motorA, -SPEED);
-      Util.updatePower(motorB, SPEED);
-      Util.updatePower(motorC, -SPEED);
-      Util.updatePower(motorD, SPEED);
+        motorA.updateSpeed(-SPEED);
+        motorB.updateSpeed( SPEED);
+        motorC.updateSpeed(-SPEED);
+        motorD.updateSpeed( SPEED);
     }
 
     public void forward() {
-      Util.updatePower(motorA, SPEED);
-      Util.updatePower(motorB, -SPEED);
-      Util.updatePower(motorC, SPEED);
-      Util.updatePower(motorD, -SPEED);
+        motorA.updateSpeed( SPEED);
+        motorB.updateSpeed(-SPEED);
+        motorC.updateSpeed( SPEED);
+        motorD.updateSpeed(-SPEED);
     }
 
     public void right() {
-      Util.updatePower(motorA, SPEED);
-      Util.updatePower(motorB, SPEED);
-      Util.updatePower(motorC, -SPEED);
-      Util.updatePower(motorD, -SPEED);
+        motorA.updateSpeed( SPEED);
+        motorB.updateSpeed( SPEED);
+        motorC.updateSpeed(-SPEED);
+        motorD.updateSpeed(-SPEED);
     }
 
     public void left() {
-      Util.updatePower(motorA, -SPEED);
-      Util.updatePower(motorB, -SPEED);
-      Util.updatePower(motorC, SPEED);
-      Util.updatePower(motorD, SPEED);
+        motorA.updateSpeed(-SPEED);
+        motorB.updateSpeed(-SPEED);
+        motorC.updateSpeed( SPEED);
+        motorD.updateSpeed( SPEED);
     }
 
     public void forwardRight() {
-      Util.updatePower(motorA, -SPEED);
-      Util.updatePower(motorB, 0);
-      Util.updatePower(motorC, 0);
-      Util.updatePower(motorD, SPEED);
+        motorA.updateSpeed(-SPEED);
+        motorB.updateSpeed( 0);
+        motorC.updateSpeed( 0);
+        motorD.updateSpeed( SPEED);
     }
 
     public void forwardLeft() {
-      Util.updatePower(motorA, 0);
-      Util.updatePower(motorB, SPEED);
-      Util.updatePower(motorC, -SPEED);
-      Util.updatePower(motorD, 0);
+        motorA.updateSpeed( 0);
+        motorB.updateSpeed( SPEED);
+        motorC.updateSpeed(-SPEED);
+        motorD.updateSpeed( 0);
     }
 
     public void backwardRight() {
-      Util.updatePower(motorA, 0);
-      Util.updatePower(motorB, -SPEED);
-      Util.updatePower(motorC, SPEED);
-      Util.updatePower(motorD, 0);
+        motorA.updateSpeed( 0);
+        motorB.updateSpeed(-SPEED);
+        motorC.updateSpeed( SPEED);
+        motorD.updateSpeed( 0);
     }
 
     public void backwardLeft() {
-      Util.updatePower(motorA, SPEED);
-      Util.updatePower(motorB, 0);
-      Util.updatePower(motorC, 0);
-      Util.updatePower(motorD, -SPEED);
+        motorA.updateSpeed( SPEED);
+        motorB.updateSpeed( 0);
+        motorC.updateSpeed( 0);
+        motorD.updateSpeed(-SPEED);
     }
 
     public void goDirection(Direction d) {
@@ -187,15 +170,15 @@ public class OmniDrive {
     }
 
     public void rotRight() {
-      for(DcMotor motor : driveMotors) {
-        Util.updatePower(motor, -SPEED);
-      }
+        for(Motor motor : driveMotors) {
+            motor.updateSpeed(-SPEED);
+        }
     }
 
     public void rotLeft() {
-      for(DcMotor motor : driveMotors) {
-        Util.updatePower(motor, SPEED);
-      }
+        for(Motor motor : driveMotors) {
+            motor.updateSpeed( SPEED);
+        }
     }
 
 }

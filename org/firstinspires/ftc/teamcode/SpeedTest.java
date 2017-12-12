@@ -11,7 +11,7 @@ public class SpeedTest extends OpMode {
 
     @Override
     public void init() {
-        wheel = new Motor((DcMotor)hardwareMap.get("A"));
+        wheel = new Motor((DcMotor)hardwareMap.get("D"));
     }
 
     @Override public void loop() {
