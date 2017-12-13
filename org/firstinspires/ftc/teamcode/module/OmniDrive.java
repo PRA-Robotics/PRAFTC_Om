@@ -71,8 +71,8 @@ public class OmniDrive {
     /*
      * I had this commented but then Half my code disappeared so thats cool i guess
      */
-    public void tick() {
-
+    public String tick() {
+        return motorA.getEncoder();
     }
 
     public void stop() {

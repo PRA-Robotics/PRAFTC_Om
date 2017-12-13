@@ -19,6 +19,7 @@ public class TeleTest extends OpMode {
 
     @Override
     public void loop() {
+        telemetry.addData("Printy Boi: ", drive.tick());
       if(gamepad2.dpad_down){
         //arm.position(1);
       }
