@@ -47,7 +47,7 @@ public class Motor {
         return ("" + motor.getDirection());
     }
 
-    public String getEncoder() {
-        return ("" + motor.getCurrentPosition());
+    public double getEncoder() {
+        return (double)motor.getCurrentPosition();
     }
 }
