@@ -57,13 +57,27 @@ public class OmniDrive {
 
 //Get/Setters
 
-  public String getDirections() {
+  public String getEncoders() {
     String output = "";
-    output+= ("MotorA: " + motorA.getDirection());
-    output+= ("MotorB: " + motorB.getDirection());
-    output+= ("MotorC: " + motorC.getDirection());
-    output+= ("MotorD: " + motorD.getDirection());
+    output+= ("MotorA: " + motorA.getEncoder());
+    output+= ("  MotorB: " + motorB.getEncoder());
+    output+= ("  MotorC: " + motorC.getEncoder());
+    output+= ("  MotorD: " + motorD.getEncoder());
     return output;
+  }
+
+  public String getPowers() {
+    String output = "";
+    output+= ("MotorA: " + motorA.getPower());
+    output+= ("  MotorB: " + motorB.getPower());
+    output+= ("  MotorC: " + motorC.getPower());
+    output+= ("  MotorD: " + motorD.getPower());
+    return output;
+  }
+
+  public Motor[] getMotors() {
+      Motor[] m = {motorA, motorB, motorC, motorD};
+      return m;
   }
 
 //Methods
@@ -72,7 +86,7 @@ public class OmniDrive {
      * I had this commented but then Half my code disappeared so thats cool i guess
      */
     public String tick() {
-        return motorA.getEncoder();
+        return ("");
     }
 
     public void stop() {
@@ -110,31 +124,31 @@ public class OmniDrive {
     }
 
     public void forwardRight() {
-        motorA.updateSpeed(-SPEED);
+        motorA.updateSpeed( SPEED);
         motorB.updateSpeed( 0);
         motorC.updateSpeed( 0);
-        motorD.updateSpeed( SPEED);
+        motorD.updateSpeed(-SPEED);
     }
 
     public void forwardLeft() {
-        motorA.updateSpeed( 0);
-        motorB.updateSpeed( SPEED);
-        motorC.updateSpeed(-SPEED);
-        motorD.updateSpeed( 0);
-    }
-
-    public void backwardRight() {
         motorA.updateSpeed( 0);
         motorB.updateSpeed(-SPEED);
         motorC.updateSpeed( SPEED);
         motorD.updateSpeed( 0);
     }
 
+    public void backwardRight() {
+        motorA.updateSpeed( 0);
+        motorB.updateSpeed( SPEED);
+        motorC.updateSpeed(-SPEED);
+        motorD.updateSpeed( 0);
+    }
+
     public void backwardLeft() {
-        motorA.updateSpeed( SPEED);
+        motorA.updateSpeed(-SPEED);
         motorB.updateSpeed( 0);
         motorC.updateSpeed( 0);
-        motorD.updateSpeed(-SPEED);
+        motorD.updateSpeed( SPEED);
     }
 
     public void goDirection(Direction d) {

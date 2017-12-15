@@ -25,7 +25,7 @@ public class AutoTest extends OpMode{
         chassis = new OmniDrive(hardwareMap);
         //arm = new LinearArm(hardwareMap);
 
-        script.add(new Drive(chassis, OmniDrive.Direction.F, new Time(500)));
+        script.add(new Drive(chassis, OmniDrive.Direction.F, new Distance(chassis.getMotors(),1806.0)));
         startTime = System.currentTimeMillis();
     }
 
