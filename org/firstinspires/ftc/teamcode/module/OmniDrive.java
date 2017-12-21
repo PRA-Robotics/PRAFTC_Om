@@ -14,6 +14,7 @@ public class OmniDrive {
     private Vector pos; //(x,y)
     private double heading; //0<x<2pi
     private HardwareMap map;
+    private int speedStatus = 0;
     private Motor motorA;
     private Motor motorB;
     private Motor motorC;
@@ -21,7 +22,7 @@ public class OmniDrive {
     private ArrayList<Motor> driveMotors;
     private ArrayList<int[]> script;
     private int ticks;
-    private static double SPEED = 2;
+    private static double SPEED = 1;
     private static int TPR = 560;
     private static double D = 10.0;
 
@@ -57,21 +58,12 @@ public class OmniDrive {
 
 //Get/Setters
 
-  public String getEncoders() {
+  public String getDirections() {
     String output = "";
-    output+= ("MotorA: " + motorA.getEncoder());
-    output+= ("  MotorB: " + motorB.getEncoder());
-    output+= ("  MotorC: " + motorC.getEncoder());
-    output+= ("  MotorD: " + motorD.getEncoder());
-    return output;
-  }
-
-  public String getPowers() {
-    String output = "";
-    output+= ("MotorA: " + motorA.getPower());
-    output+= ("  MotorB: " + motorB.getPower());
-    output+= ("  MotorC: " + motorC.getPower());
-    output+= ("  MotorD: " + motorD.getPower());
+    output+= ("MotorA: " + motorA.getDirection());
+    output+= ("MotorB: " + motorB.getDirection());
+    output+= ("MotorC: " + motorC.getDirection());
+    output+= ("MotorD: " + motorD.getDirection());
     return output;
   }
 
@@ -86,7 +78,7 @@ public class OmniDrive {
      * I had this commented but then Half my code disappeared so thats cool i guess
      */
     public String tick() {
-        return ("");
+        return ("" + motorA.getEncoder());
     }
 
     public void stop() {
@@ -94,61 +86,60 @@ public class OmniDrive {
             motor.updateSpeed(0);
         }
     }
-
     public void backward() {
-        motorA.updateSpeed(-SPEED);
-        motorB.updateSpeed( SPEED);
-        motorC.updateSpeed(-SPEED);
-        motorD.updateSpeed( SPEED);
+        motorA.updateSpeed(SPEED);
+        motorB.updateSpeed(- SPEED);
+        motorC.updateSpeed(SPEED);
+        motorD.updateSpeed(- SPEED);
     }
 
     public void forward() {
-        motorA.updateSpeed( SPEED);
-        motorB.updateSpeed(-SPEED);
-        motorC.updateSpeed( SPEED);
-        motorD.updateSpeed(-SPEED);
+        motorA.updateSpeed(-SPEED);
+        motorB.updateSpeed(SPEED);
+        motorC.updateSpeed(-SPEED);
+        motorD.updateSpeed(SPEED);
     }
 
     public void right() {
-        motorA.updateSpeed( SPEED);
-        motorB.updateSpeed( SPEED);
-        motorC.updateSpeed(-SPEED);
-        motorD.updateSpeed(-SPEED);
+        motorA.updateSpeed( -SPEED);
+        motorB.updateSpeed( -SPEED);
+        motorC.updateSpeed(SPEED);
+        motorD.updateSpeed(SPEED);
     }
 
     public void left() {
-        motorA.updateSpeed(-SPEED);
-        motorB.updateSpeed(-SPEED);
-        motorC.updateSpeed( SPEED);
-        motorD.updateSpeed( SPEED);
+        motorA.updateSpeed(SPEED);
+        motorB.updateSpeed(SPEED);
+        motorC.updateSpeed( -SPEED);
+        motorD.updateSpeed( -SPEED);
     }
 
     public void forwardRight() {
-        motorA.updateSpeed( SPEED);
+        motorA.updateSpeed( -SPEED);
         motorB.updateSpeed( 0);
         motorC.updateSpeed( 0);
-        motorD.updateSpeed(-SPEED);
+        motorD.updateSpeed(SPEED);
     }
 
     public void forwardLeft() {
         motorA.updateSpeed( 0);
-        motorB.updateSpeed(-SPEED);
-        motorC.updateSpeed( SPEED);
+        motorB.updateSpeed(SPEED);
+        motorC.updateSpeed( -SPEED);
         motorD.updateSpeed( 0);
     }
 
     public void backwardRight() {
         motorA.updateSpeed( 0);
-        motorB.updateSpeed( SPEED);
-        motorC.updateSpeed(-SPEED);
+        motorB.updateSpeed( -SPEED);
+        motorC.updateSpeed(SPEED);
         motorD.updateSpeed( 0);
     }
 
     public void backwardLeft() {
-        motorA.updateSpeed(-SPEED);
+        motorA.updateSpeed(SPEED);
         motorB.updateSpeed( 0);
         motorC.updateSpeed( 0);
-        motorD.updateSpeed( SPEED);
+        motorD.updateSpeed( -SPEED);
     }
 
     public void goDirection(Direction d) {
@@ -193,6 +184,15 @@ public class OmniDrive {
         for(Motor motor : driveMotors) {
             motor.updateSpeed( SPEED);
         }
+    }
+    
+    public void cutSpeed(){
+        if(speedStatus % 2 == 0){
+            SPEED/=2;
+        }else{
+            SPEED*=2;
+        }
+        speedStatus++;
     }
 
 }

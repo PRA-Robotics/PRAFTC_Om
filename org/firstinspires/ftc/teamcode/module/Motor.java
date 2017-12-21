@@ -10,14 +10,15 @@ public class Motor {
     private double lastEncoder;
     private double lastSpeedDiff;
     private double errorSum;
-    private static double SPEED_P = 0.03;
+    private static double SPEED_P = 0.06;
     private static double SPEED_I = 0.0;//0.00025;
-    private static double SPEED_D = 0.0001;
+    private static double SPEED_D = 0.0;
+    private static double CUTOFF = 0.04;
     public Motor(DcMotor m) {
         motor = m;
         Util.initMotor(motor);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        motor.setDirection(DcMotor.Direction.BACKWARD);
+        motor.setDirection(DcMotor.Direction.FORWARD);
         lastTime = (double)System.currentTimeMillis();
         lastEncoder = (double)motor.getCurrentPosition();
         speed = 0;
@@ -37,14 +38,15 @@ public class Motor {
         double speedDiff = goalSpeed - speed;
         double deltaError = lastSpeedDiff - speedDiff;
         errorSum += speedDiff;
-        motor.setPower(motor.getPower() + (speedDiff * SPEED_P) + (errorSum * SPEED_I) + (deltaError * SPEED_D));
+        double power = motor.getPower() + (speedDiff * SPEED_P) + (errorSum * SPEED_I) + (deltaError * SPEED_D);
+        motor.setPower((Math.abs(power) < CUTOFF) ? 0 : power);
 
         lastSpeedDiff = speedDiff;
         return ("" + lastEncoder);
     }
 
-    public String getPower() {
-        return ("" + motor.getPower());
+    public String getDirection() {
+        return ("" + motor.getDirection());
     }
 
     public double getEncoder() {
