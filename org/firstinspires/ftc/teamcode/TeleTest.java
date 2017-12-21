@@ -24,7 +24,7 @@ public class TeleTest extends OpMode {
 
     @Override
     public void loop() {
-      telemetry.addData("Printy Boi: ", eye.blue() - eye.red());
+      telemetry.addData("Blue - Red: ", eye.blue() - eye.red());
       if(gamepad2.right_trigger > 0.5){
         arm.extend();
       }else if(gamepad2.left_trigger > 0.5){
