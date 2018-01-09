@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.module;
 
-import org.firstinspires.ftc.teamcode.util.Vector;
+
 import org.firstinspires.ftc.teamcode.util.Util;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -11,8 +11,6 @@ public class OmniDrive {
 
 //variables
 
-    private Vector pos; //(x,y)
-    private double heading; //0<x<2pi
     private HardwareMap map;
     private int speedStatus = 0;
     private Motor motorA;
@@ -20,11 +18,12 @@ public class OmniDrive {
     private Motor motorC;
     private Motor motorD;
     private ArrayList<Motor> driveMotors;
-    private ArrayList<int[]> script;
+    private ArrayList<double> initialEncoders;
     private int ticks;
+    private double distance;
     private static double SPEED = 1;
-    private static int TPR = 560;
-    private static double D = 10.0;
+    //.private static int TPR = 560;
+    //private static double D = 10.0;
 
     public enum Direction {
         F, FR, R, BR, B, BL, L, FL
@@ -42,17 +41,15 @@ public class OmniDrive {
         driveMotors.add(motorB);
         driveMotors.add(motorC);
         driveMotors.add(motorD);
-        for (Motor motor : driveMotors) {
-
-        }
+        initialEncoders.add(0);
+        initialEncoders.add(0);
+        initialEncoders.add(0);
+        initialEncoders.add(0);
 
         //motorA.setDirection(DcMotor.Direction.REVERSE);
         //motorB.setDirection(DcMotor.Direction.REVERSE);
-
-        pos = new Vector(0,0);
-        heading = 0;
-        script = new ArrayList<int[]>();
         ticks = 0;
+        distance = 0;
 
     }
 
@@ -77,6 +74,21 @@ public class OmniDrive {
     /*
      * I had this commented but then Half my code disappeared so thats cool i guess
      */
+
+    public void resetDistance() {
+        for (int i = 0; i < driveMotors.size(); i++) {
+            initialEncoders.set(i, driveMotors.get(i).getEncoder());
+        }
+    }
+
+    public double getDistance() {
+        double totalTicks = 0;
+        for (int i = 0; i < driveMotors.size(); i++) {
+            totalTicks += (driveMotors.get(i).getEncoder() - initialEncoders.get(i));
+        }
+        return (totalTicks/driveMotors.size());
+    }
+
     public String tick() {
         return ("" + motorA.getEncoder());
     }
@@ -185,7 +197,7 @@ public class OmniDrive {
             motor.updateSpeed( SPEED);
         }
     }
-    
+
     public void cutSpeed(){
         if(speedStatus % 2 == 0){
             SPEED/=2;

@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.auto.*;
 import org.firstinspires.ftc.teamcode.auto.condition.*;
 import java.util.ArrayList;
 
-@Autonomous(name="OmniDriveAuto", group="Opmode")
+@Autonomous(name="AutoTest", group="Opmode")
 
 public class AutoTest extends OpMode{
 
@@ -26,6 +26,8 @@ public class AutoTest extends OpMode{
         //arm = new LinearArm(hardwareMap);
 
         script.add(new Drive(chassis, OmniDrive.Direction.F, new Distance(chassis.getMotors(),1806.0)));
+        script.add(new Wait(new Time(100)));
+        script.add(new Drive(chassis, OmniDrive.Direction.B, new Distance(chassis.getMotors(),1806.0)));
         startTime = System.currentTimeMillis();
     }
 
