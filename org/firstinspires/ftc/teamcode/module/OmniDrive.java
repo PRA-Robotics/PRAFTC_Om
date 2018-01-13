@@ -18,7 +18,7 @@ public class OmniDrive {
     private Motor motorC;
     private Motor motorD;
     private ArrayList<Motor> driveMotors;
-    private ArrayList<double> initialEncoders;
+    private ArrayList<Double> initialEncoders;
     private int ticks;
     private double distance;
     private static double SPEED = 1;
@@ -37,14 +37,15 @@ public class OmniDrive {
         motorC = new Motor((DcMotor)map.get("C"));
         motorD = new Motor((DcMotor)map.get("D"));
         driveMotors = new ArrayList<Motor>();
+        initialEncoders = new ArrayList<Double>();
         driveMotors.add(motorA);
         driveMotors.add(motorB);
         driveMotors.add(motorC);
         driveMotors.add(motorD);
-        initialEncoders.add(0);
-        initialEncoders.add(0);
-        initialEncoders.add(0);
-        initialEncoders.add(0);
+        initialEncoders.add(0.0);
+        initialEncoders.add(0.0);
+        initialEncoders.add(0.0);
+        initialEncoders.add(0.0);
 
         //motorA.setDirection(DcMotor.Direction.REVERSE);
         //motorB.setDirection(DcMotor.Direction.REVERSE);
@@ -84,13 +85,13 @@ public class OmniDrive {
     public double getDistance() {
         double totalTicks = 0;
         for (int i = 0; i < driveMotors.size(); i++) {
-            totalTicks += (driveMotors.get(i).getEncoder() - initialEncoders.get(i));
+            totalTicks += (Math.abs(driveMotors.get(i).getEncoder() - initialEncoders.get(i)));
         }
         return (totalTicks/driveMotors.size());
     }
 
     public String tick() {
-        return ("" + motorA.getEncoder());
+        return ("" + getDistance());
     }
 
     public void stop() {

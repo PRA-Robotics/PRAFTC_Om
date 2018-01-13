@@ -25,9 +25,10 @@ public class AutoTest extends OpMode{
         chassis = new OmniDrive(hardwareMap);
         //arm = new LinearArm(hardwareMap);
 
-        script.add(new Drive(chassis, OmniDrive.Direction.F, new Distance(chassis.getMotors(),1806.0)));
-        script.add(new Wait(new Time(100)));
-        script.add(new Drive(chassis, OmniDrive.Direction.B, new Distance(chassis.getMotors(),1806.0)));
+        script.add(new Drive(chassis, OmniDrive.Direction.F, new Distance(chassis, 1806.0)));
+        script.add(new Wait(chassis, new Time(100)));
+        script.add(new Drive(chassis, OmniDrive.Direction.B, new Distance(chassis, 1806.0)));
+        script.add(new Wait(chassis, new Time(100)));
         startTime = System.currentTimeMillis();
     }
 
@@ -35,10 +36,11 @@ public class AutoTest extends OpMode{
     public void loop() {
         if(script.size() != 0) {
             if(script.get(0).tick()) {
+                script.get(0).end();
                 script.remove(0);
             }
         }
-        chassis.tick();
+        telemetry.addData("Distance: ", chassis.tick());
         //arm.tick();
     }
 }
