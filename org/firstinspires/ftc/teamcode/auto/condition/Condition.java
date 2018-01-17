@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.auto.condition;
 public abstract class Condition {
     private boolean firstLoop = true;
 
-    public abstract void init();
+    public void init() {};
     public abstract boolean loop();
     public boolean tick() {
         if (firstLoop) {

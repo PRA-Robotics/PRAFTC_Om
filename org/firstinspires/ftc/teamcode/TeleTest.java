@@ -13,6 +13,7 @@ public class TeleTest extends OpMode {
     private LinearArm arm;
     private ColorSensor eye;
     private int time;
+    private boolean justPressed;
 
 
     @Override
@@ -20,6 +21,7 @@ public class TeleTest extends OpMode {
         drive = new OmniDrive(hardwareMap);
         arm = new LinearArm(hardwareMap, 0.5);
         eye = (ColorSensor)hardwareMap.get("eye");
+        justPressed = false;
     }
 
     @Override
@@ -41,9 +43,16 @@ public class TeleTest extends OpMode {
       time ++;
       //telemetry.addData("Elbow Enc " , arm.tick());
       //arm.tick();
-      if(gamepad1.y){
-        drive.cutSpeed();
+      if(gamepad1.y && !justPressed){
+          drive.setSpeed(drive.getSpeed() + .25);
+          justPressed = true;
+      } else if(gamepad1.x && !justPressed){
+          drive.setSpeed(drive.getSpeed() + .25);
+          justPressed = true;
+      } else if (!gamepad1.y && !gamepad1.x){
+          justPressed = false;
       }
+
       if(gamepad1.right_stick_y > 0.5) { //forward
         /*if(gamepad1.right_stick_x < -0.5) { //right
           drive.forwardRight();

@@ -10,9 +10,9 @@ public abstract class Instruct {
         condition = c;
     }
 
-    public abstract void init();
-    public abstract void loop();
-    public abstract void end();
+    public void init() {};
+    public void loop() {};
+    public void end() {};
 
     public boolean tick() {
         if (firstLoop) {

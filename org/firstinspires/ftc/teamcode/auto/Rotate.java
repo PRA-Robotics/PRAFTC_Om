@@ -13,10 +13,6 @@ public class Rotate extends Instruct {
         speed = s;
     }
 
-    public void init() {
-
-    }
-
     public void loop() {
         motor.updateSpeed(speed);
     }
