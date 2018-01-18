@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.module;
 import org.firstinspires.ftc.teamcode.util.Util;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import java.util.ArrayList;
 
 
@@ -22,11 +23,19 @@ public class OmniDrive {
     private int ticks;
     private double distance;
     private double speed;
+    private ColorSensor eye;
     //.private static int TPR = 560;
     //private static double D = 10.0;
 
     public enum Direction {
-        F, FR, R, BR, B, BL, L, FL
+        F,
+        FR,
+        R,
+        BR,
+        B,
+        BL,
+        L,
+        FL
     }
 
 //Constructors
@@ -37,6 +46,8 @@ public class OmniDrive {
         motorC = new Motor((DcMotor)map.get("C"));
         motorD = new Motor((DcMotor)map.get("D"));
         motorS = (DcMotor)map.get("neck");
+        eye = (ColorSensor)map.get("eye");
+        eye.enableLed(false);
         motorS.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         driveMotors = new ArrayList<Motor>();
         initialEncoders = new ArrayList<Double>();
@@ -81,20 +92,27 @@ public class OmniDrive {
     public double getSpeed() {
         return speed;
     }
+
+    public ColorSensor getColorSensor() {
+        return eye;
+    }
 //Methods
 
     public void eyeDown() {
-        motorS.setTargetPosition(100/360 * 1120);
+        motorS.setTargetPosition((int) (100.0/360.0 * 1120.0));
         motorS.setPower(0.5);
     }
 
     public void eyeUp() {
-        motorS.setTargetPosition(-20/360 * 1120);
-        motorS.setPower(0.5);
+        motorS.setTargetPosition((int) (-20.0/360.0 * 1120.0));
+        motorS.setPower(-0.5);
     }
 
     public boolean eyeDone() {
-        motorS.setPower(0);
+        /*if (motorS.isBusy()) {
+            motorS.setPower(0);
+            return true
+        }*/
         return motorS.isBusy();
     }
 
@@ -117,7 +135,7 @@ public class OmniDrive {
     }
 
     public String tick() {
-        return ("" + getDistance());
+        return ("" + motorS.getCurrentPosition());
     }
 
     public void stop() {
@@ -221,8 +239,12 @@ public class OmniDrive {
 
     public void rotLeft() {
         for(Motor motor : driveMotors) {
-            motor.updateSpeed( speed);
+            motor.updateSpeed(speed);
         }
+    }
+
+    public boolean isBlue() {
+        return (eye.blue() - eye.red()) > 0;
     }
 
 }

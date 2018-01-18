@@ -25,7 +25,9 @@ public class AutoTest extends OpMode{
         chassis = new OmniDrive(hardwareMap);
         //arm = new LinearArm(hardwareMap);
 
-        script.add(new LowerEye(chassis, new EyeAtPosition(chassis)));
+        script.add(new MoveEye(chassis, MoveEye.Direction.DOWN, new EyeAtPosition(chassis)));
+        script.add(new Jewel(chassis, Jewel.Color.BLUE, new Time(50));
+        script.add(new MoveEye(chassis, MoveEye.Direction.UP, new EyeAtPosition(chassis)));
         //script.add(new Drive(chassis, OmniDrive.Direction.F, new Distance(chassis, 1806.0)));
         //script.add(new Wait(chassis, new Time(100)));
         //script.add(new Drive(chassis, OmniDrive.Direction.B, new Distance(chassis, 1806.0)));
@@ -40,7 +42,7 @@ public class AutoTest extends OpMode{
                 script.remove(0);
             }
         }
-        telemetry.addData("Distance: ", chassis.tick());
+        telemetry.addData("Arm: ", chassis.tick());
         //arm.tick();
     }
 }
