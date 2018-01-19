@@ -52,11 +52,11 @@ public class LinearArm {
 
     public void shoulder(double joystickPosY){
         if(joystickPosY < -0.1){
-            shoulder.setPower(-joystickPosY * 0.6);
+            shoulder.setPower(-joystickPosY * 0.4);
         }else{
-            shoulder.setPower(0.3);
+            shoulder.setPower(0.2);
             if(joystickPosY > 0.1){
-                shoulder.setPower(-joystickPosY * 0.6);
+                shoulder.setPower(-joystickPosY * 0.4);
             }else{//0.05
                 shoulder.setPower(0);
             }
@@ -65,12 +65,12 @@ public class LinearArm {
     }
 
     public void waist(double joystickPosX){
-        waist.setPower(-joystickPosX * 0.4);
+        waist.setPower(-joystickPosX * 0.25);
     }
 
     public void changeClaw(){
         clawClosed = !clawClosed;
-        claw.setPosition(((clawClosed) ? .325 : .90));
+        claw.setPosition(((clawClosed) ? .325 : .70));
     }
 
 }
