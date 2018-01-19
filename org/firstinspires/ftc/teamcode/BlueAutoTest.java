@@ -26,7 +26,7 @@ public class BlueAutoTest extends OpMode{
         //arm = new LinearArm(hardwareMap);
 
         script.add(new MoveEye(chassis, MoveEye.Direction.DOWN, new EyeAtPosition(chassis)));
-        script.add(new Wait(chassis, new Time(10)));
+        script.add(new Wait(chassis, new Time(20)));
         script.add(new Jewel(chassis, Jewel.Color.RED, new Time(3)));
         script.add(new Wait(chassis, new Time(20)));
         script.add(new MoveEye(chassis, MoveEye.Direction.UP, new EyeAtPosition(chassis)));

@@ -23,7 +23,7 @@ public class Jewel extends Instruct {
         if(drive.isBlue() && targetColor == Color.BLUE) {
             turnLeft = true;
         } else if (!drive.isBlue() && targetColor == Color.RED) {
-            turnLeft = false;
+            turnLeft = true;
         } else {
             turnLeft = false;
         }
