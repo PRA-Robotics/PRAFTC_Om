@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.module.*;
+import org.firstinspires.ftc.teamcode.util.*;
 
 @TeleOp
 
@@ -11,6 +13,7 @@ public class TeleTest extends OpMode {
 
     private OmniDrive drive;
     private LinearArm arm;
+    private DcMotor motorS;
     private ColorSensor eye;
     private int time;
     private boolean justPressed;
@@ -20,7 +23,9 @@ public class TeleTest extends OpMode {
     public void init() {
         drive = new OmniDrive(hardwareMap);
         arm = new LinearArm(hardwareMap, 0.5);
+        motorS = (DcMotor)hardwareMap.get("neck");
         eye = (ColorSensor)hardwareMap.get("eye");
+        Util.initMotor(motorS);
         justPressed = false;
     }
 
@@ -53,6 +58,8 @@ public class TeleTest extends OpMode {
           justPressed = false;
       }
 
+      motorS.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
+
       if(gamepad1.right_stick_y > 0.5) { //forward
         /*if(gamepad1.right_stick_x < -0.5) { //right
           drive.forwardRight();
@@ -78,9 +85,9 @@ public class TeleTest extends OpMode {
           drive.left();
         } else {
           if(gamepad1.left_stick_x < -0.5) { //rotate right
-            drive.rotRight();
+            drive.rotCC();
         } else if(gamepad1.left_stick_x > 0.5) { //rotate left
-            drive.rotLeft();
+            drive.rotC();
           } else { //stop
             drive.stop();
           }

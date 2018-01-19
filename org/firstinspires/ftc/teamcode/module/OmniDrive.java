@@ -35,7 +35,9 @@ public class OmniDrive {
         B,
         BL,
         L,
-        FL
+        FL,
+        C,
+        CC
     }
 
 //Constructors
@@ -48,6 +50,7 @@ public class OmniDrive {
         motorS = (DcMotor)map.get("neck");
         eye = (ColorSensor)map.get("eye");
         eye.enableLed(false);
+        motorS.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorS.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         driveMotors = new ArrayList<Motor>();
         initialEncoders = new ArrayList<Double>();
@@ -100,12 +103,12 @@ public class OmniDrive {
 
     public void eyeDown() {
         motorS.setTargetPosition((int) (100.0/360.0 * 1120.0));
-        motorS.setPower(0.5);
+        motorS.setPower(0.25);
     }
 
     public void eyeUp() {
-        motorS.setTargetPosition((int) (-20.0/360.0 * 1120.0));
-        motorS.setPower(-0.5);
+        motorS.setTargetPosition(0);
+        motorS.setPower(-0.25);
     }
 
     public boolean eyeDone() {
@@ -225,19 +228,25 @@ public class OmniDrive {
             case FL:
                 this.forwardLeft();
                 break;
+            case C:
+                this.rotC();
+                break;
+            case CC:
+                this.rotCC();
+                break;
             default:
                 this.stop();
                 break;
         }
     }
 
-    public void rotRight() {
+    public void rotCC() {
         for(Motor motor : driveMotors) {
             motor.updateSpeed(-speed);
         }
     }
 
-    public void rotLeft() {
+    public void rotC() {
         for(Motor motor : driveMotors) {
             motor.updateSpeed(speed);
         }

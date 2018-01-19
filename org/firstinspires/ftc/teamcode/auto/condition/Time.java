@@ -15,6 +15,6 @@ public class Time extends Condition {
 
     public boolean loop() {
         currentTime++;
-        return (currentTime == endTime);
+        return (currentTime >= endTime);
     }
 }

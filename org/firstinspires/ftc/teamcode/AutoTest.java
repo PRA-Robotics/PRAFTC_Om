@@ -7,9 +7,9 @@ import org.firstinspires.ftc.teamcode.auto.*;
 import org.firstinspires.ftc.teamcode.auto.condition.*;
 import java.util.ArrayList;
 
-@Autonomous(name="AutoTest", group="Opmode")
+@Autonomous(name="RedAutoTest", group="Opmode")
 
-public class AutoTest extends OpMode{
+public class RedAutoTest extends OpMode{
 
     private OmniDrive chassis;
     //private LinearArm arm;
@@ -26,8 +26,12 @@ public class AutoTest extends OpMode{
         //arm = new LinearArm(hardwareMap);
 
         script.add(new MoveEye(chassis, MoveEye.Direction.DOWN, new EyeAtPosition(chassis)));
-        script.add(new Jewel(chassis, Jewel.Color.BLUE, new Time(50));
+        script.add(new Wait(chassis, new Time(10)));
+        script.add(new Jewel(chassis, Jewel.Color.BLUE, new Time(3)));
+        script.add(new Wait(chassis, new Time(20)));
         script.add(new MoveEye(chassis, MoveEye.Direction.UP, new EyeAtPosition(chassis)));
+        //script.add(new Drive(chassis, OmniDrive.Direction.C, new Time(30)));
+        //script.add(new Wait(chassis, new Time())
         //script.add(new Drive(chassis, OmniDrive.Direction.F, new Distance(chassis, 1806.0)));
         //script.add(new Wait(chassis, new Time(100)));
         //script.add(new Drive(chassis, OmniDrive.Direction.B, new Distance(chassis, 1806.0)));
@@ -42,7 +46,7 @@ public class AutoTest extends OpMode{
                 script.remove(0);
             }
         }
-        telemetry.addData("Arm: ", chassis.tick());
+        telemetry.addData("Is Blue?: ", chassis.isBlue());
         //arm.tick();
     }
 }

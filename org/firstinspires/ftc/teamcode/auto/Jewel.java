@@ -22,8 +22,8 @@ public class Jewel extends Instruct {
     public void init() {
         if(drive.isBlue() && targetColor == Color.BLUE) {
             turnLeft = true;
-        } else if (targetColor == Color.RED) {
-            turnLeft = true;
+        } else if (!drive.isBlue() && targetColor == Color.RED) {
+            turnLeft = false;
         } else {
             turnLeft = false;
         }
@@ -31,9 +31,9 @@ public class Jewel extends Instruct {
 
     public void loop() {
         if(turnLeft) {
-            drive.rotLeft();
+            drive.rotCC();
         } else {
-            drive.rotRight();
+            drive.rotC();
         }
     }
 
