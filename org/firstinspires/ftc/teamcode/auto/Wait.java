@@ -11,15 +11,7 @@ public class Wait extends Instruct {
         drive = d;
     }
 
-    public void init() {
-
-    }
-
     public void loop() {
         drive.stop();
-    }
-
-    public void end() {
-
     }
 }

@@ -7,9 +7,9 @@ import org.firstinspires.ftc.teamcode.auto.*;
 import org.firstinspires.ftc.teamcode.auto.condition.*;
 import java.util.ArrayList;
 
-@Autonomous(name="RedAutoTest", group="Opmode")
+@Autonomous(name="BlueAutonomous", group="Opmode")
 
-public class RedAutoTest extends OpMode{
+public class BlueAutonomous extends OpMode{
 
     private OmniDrive chassis;
     //private LinearArm arm;
@@ -27,7 +27,7 @@ public class RedAutoTest extends OpMode{
 
         script.add(new MoveEye(chassis, MoveEye.Direction.DOWN, new EyeAtPosition(chassis)));
         script.add(new Wait(chassis, new Time(20)));
-        script.add(new Jewel(chassis, Jewel.Color.BLUE, new Time(3)));
+        script.add(new Jewel(chassis, Jewel.Color.RED, new Time(10)));
         script.add(new Wait(chassis, new Time(20)));
         script.add(new MoveEye(chassis, MoveEye.Direction.UP, new EyeAtPosition(chassis)));
         //script.add(new Drive(chassis, OmniDrive.Direction.C, new Time(30)));

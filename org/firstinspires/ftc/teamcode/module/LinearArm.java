@@ -39,14 +39,14 @@ public class LinearArm {
     public void extend() {
         range++;
         if(bicep.getPower() != speed) {
-            bicep.setPower(speed);
+            bicep.setPower(-speed);
         }
     }
 
     public void retract() {
         range++;
         if(bicep.getPower() != -speed) {
-            bicep.setPower(-speed);
+            bicep.setPower(speed);
         }
     }
 
@@ -56,7 +56,7 @@ public class LinearArm {
         }else{
             shoulder.setPower(0.2);
             if(joystickPosY > 0.1){
-                shoulder.setPower(-joystickPosY * 0.4);
+                shoulder.setPower(-joystickPosY * 0.2);
             }else{//0.05
                 shoulder.setPower(0);
             }

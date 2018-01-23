@@ -13,10 +13,6 @@ public class Drive extends Instruct {
         direction = dir;
     }
 
-    public void init() {
-
-    }
-
     public void loop() {
         drive.goDirection(direction);
     }

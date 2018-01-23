@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.util.*;
 
 @TeleOp
 
-public class TeleTest extends OpMode {
+public class PRATeleOp extends OpMode {
 
     private OmniDrive drive;
     private LinearArm arm;
@@ -58,7 +58,7 @@ public class TeleTest extends OpMode {
           justPressed = false;
       }
 
-      motorS.setPower(gamepad1.left_trigger - gamepad1.right_trigger);
+      motorS.setPower((gamepad1.left_trigger - gamepad1.right_trigger)/4);
 
       if(gamepad1.right_stick_y > 0.5) { //forward
         /*if(gamepad1.right_stick_x < -0.5) { //right
