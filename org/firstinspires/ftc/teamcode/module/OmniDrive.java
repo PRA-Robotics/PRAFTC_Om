@@ -87,7 +87,7 @@ public class OmniDrive {
   }
 
     public void setSpeed(double s) {
-        if (s > 0 && s < 2) {
+        if (s > 0 && s <= 2) {
             speed = s;
         }
     }
@@ -160,14 +160,14 @@ public class OmniDrive {
         motorD.updateSpeed(speed);
     }
 
-    public void right() {
+    public void left() {
         motorA.updateSpeed( -speed);
         motorB.updateSpeed( -speed);
         motorC.updateSpeed(speed);
         motorD.updateSpeed(speed);
     }
 
-    public void left() {
+    public void right() {
         motorA.updateSpeed(speed);
         motorB.updateSpeed(speed);
         motorC.updateSpeed( -speed);

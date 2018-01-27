@@ -31,7 +31,7 @@ public class PRATeleOp extends OpMode {
 
     @Override
     public void loop() {
-      telemetry.addData("Blue - Red: ", eye.blue() - eye.red());
+      telemetry.addData("Speed: ", drive.getSpeed());
       if(gamepad2.right_trigger > 0.5){
         arm.extend();
       }else if(gamepad2.left_trigger > 0.5){
@@ -52,7 +52,7 @@ public class PRATeleOp extends OpMode {
           drive.setSpeed(drive.getSpeed() + .25);
           justPressed = true;
       } else if(gamepad1.x && !justPressed){
-          drive.setSpeed(drive.getSpeed() + .25);
+          drive.setSpeed(drive.getSpeed() - .25);
           justPressed = true;
       } else if (!gamepad1.y && !gamepad1.x){
           justPressed = false;
@@ -80,9 +80,9 @@ public class PRATeleOp extends OpMode {
         drive.forward();
       } else {
         if(gamepad1.right_stick_x < -0.5) { //right
-          drive.right();
-      } else if(gamepad1.right_stick_x > 0.5) { //left
           drive.left();
+      } else if(gamepad1.right_stick_x > 0.5) { //left
+          drive.right();
         } else {
           if(gamepad1.left_stick_x < -0.5) { //rotate right
             drive.rotCC();
