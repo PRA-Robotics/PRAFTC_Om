@@ -68,7 +68,7 @@ public class PRATeleOp extends OpMode {
         } else {
           drive.forward();
       }*/
-        drive.forward();
+        drive.backward();
     } else if(gamepad1.right_stick_y < -0.5) { //backward
         /*if(gamepad1.right_stick_x < -0.5) { //right
           drive.backwardRight();
@@ -77,7 +77,7 @@ public class PRATeleOp extends OpMode {
         } else {
           drive.backward();
       }*/
-        drive.backward();
+        drive.forward();
       } else {
         if(gamepad1.right_stick_x < -0.5) { //right
           drive.right();

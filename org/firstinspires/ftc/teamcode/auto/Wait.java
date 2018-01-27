@@ -4,14 +4,12 @@ import org.firstinspires.ftc.teamcode.module.OmniDrive;
 import org.firstinspires.ftc.teamcode.auto.condition.Condition;
 
 public class Wait extends Instruct {
-    private OmniDrive drive;
 
-    public Wait (OmniDrive d, Condition c) {
+    public Wait (Condition c) {
         super(c);
-        drive = d;
     }
 
     public void loop() {
-        drive.stop();
+        chassis.stop();
     }
 }

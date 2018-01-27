@@ -12,41 +12,32 @@ import java.util.ArrayList;
 public class BlueAutonomous extends OpMode{
 
     private OmniDrive chassis;
-    //private LinearArm arm;
-    private ArrayList<Instruct> script;
-
-    private long startTime;
-
-    private long deltaTime;
+    private Script script;
 
     @Override
     public void init() {
-        script = new ArrayList<Instruct>();
         chassis = new OmniDrive(hardwareMap);
-        //arm = new LinearArm(hardwareMap);
+        script = new Script(chassis);
 
-        script.add(new MoveEye(chassis, MoveEye.Direction.DOWN, new EyeAtPosition(chassis)));
-        script.add(new Wait(chassis, new Time(20)));
-        script.add(new Jewel(chassis, Jewel.Color.RED, new Time(10)));
-        script.add(new Wait(chassis, new Time(20)));
-        script.add(new MoveEye(chassis, MoveEye.Direction.UP, new EyeAtPosition(chassis)));
-        //script.add(new Drive(chassis, OmniDrive.Direction.C, new Time(30)));
-        //script.add(new Wait(chassis, new Time())
-        //script.add(new Drive(chassis, OmniDrive.Direction.F, new Distance(chassis, 1806.0)));
-        //script.add(new Wait(chassis, new Time(100)));
-        //script.add(new Drive(chassis, OmniDrive.Direction.B, new Distance(chassis, 1806.0)));
-        //script.add(new Wait(chassis, new Time(100)));
-        startTime = System.currentTimeMillis();
+        script.add(new MoveEye(MoveEye.Direction.DOWN, new EyeAtPosition()));
+        script.add(new Jewel(Jewel.Color.RED, new Time(600)));
+        script.add(new Drive(OmniDrive.Direction.CC, new State("turnLeft", State.Comp.EQ, 1, new Distance(200))));
+        script.add(new Drive(OmniDrive.Direction.C, new State("turnLeft", State.Comp.EQ, 0, new Distance(200))));
+        script.add(new Wait(new Time(1000)));
+        script.add(new MoveEye(MoveEye.Direction.UP, new EyeAtPosition()));
+        script.add(new Drive(OmniDrive.Direction.C, new State("turnLeft", State.Comp.EQ, 1, new Distance(200))));
+        script.add(new Drive(OmniDrive.Direction.CC, new State("turnLeft", State.Comp.EQ, 0, new Distance(200))));
+        script.add(new Wait(new Time(1000)));
+        script.add(new Drive(OmniDrive.Direction.F, new Distance(800)));
+        script.add(new Drive(OmniDrive.Direction.R, new Distance(900)));
+        script.add(new Drive(OmniDrive.Direction.B, new Distance(200)));
+        script.add(new Wait(new Time(1000)));
     }
 
     @Override
     public void loop() {
-        if(script.size() != 0) {
-            if(script.get(0).tick()) {
-                script.remove(0);
-            }
-        }
-        telemetry.addData("Is Blue?: ", chassis.isBlue());
-        //arm.tick();
+        script.tick();
+        telemetry.addData("Is Blue?", chassis.isBlue());
+        telemetry.addData("Distance", chassis.getDistance());
     }
 }

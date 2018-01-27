@@ -11,7 +11,7 @@ public class Motor {
     private double lastSpeedDiff;
     private double errorSum;
     private static double SPEED_P = 0.06;
-    private static double SPEED_I = 0.0;//0.00025;
+    private static double SPEED_I = 0.0;
     private static double SPEED_D = 0.0;
     private static double CUTOFF = 0.04;
     public Motor(DcMotor m) {

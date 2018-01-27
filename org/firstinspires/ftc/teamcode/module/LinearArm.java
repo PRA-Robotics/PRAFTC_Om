@@ -70,7 +70,7 @@ public class LinearArm {
 
     public void changeClaw(){
         clawClosed = !clawClosed;
-        claw.setPosition(((clawClosed) ? .325 : .70));
+        claw.setPosition(((clawClosed) ? .7 : .9));
     }
 
 }

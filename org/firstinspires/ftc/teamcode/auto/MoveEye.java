@@ -4,16 +4,14 @@ import org.firstinspires.ftc.teamcode.module.OmniDrive;
 import org.firstinspires.ftc.teamcode.auto.condition.Condition;
 
 public class MoveEye extends Instruct {
-    private OmniDrive chassis;
     private Direction dir;
 
     public enum Direction {
         UP, DOWN
     }
 
-    public MoveEye(OmniDrive ch, Direction d, Condition c) {
+    public MoveEye(Direction d, Condition c) {
         super(c);
-        chassis = ch;
         dir = d;
     }
 

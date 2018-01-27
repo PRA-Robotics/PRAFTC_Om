@@ -146,14 +146,14 @@ public class OmniDrive {
             motor.updateSpeed(0);
         }
     }
-    public void backward() {
+    public void forward() {
         motorA.updateSpeed(speed);
         motorB.updateSpeed(- speed);
         motorC.updateSpeed(speed);
         motorD.updateSpeed(- speed);
     }
 
-    public void forward() {
+    public void backward() {
         motorA.updateSpeed(-speed);
         motorB.updateSpeed(speed);
         motorC.updateSpeed(-speed);
