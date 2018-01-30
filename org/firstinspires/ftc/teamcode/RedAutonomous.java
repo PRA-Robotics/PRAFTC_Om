@@ -30,7 +30,6 @@ public class RedAutonomous extends OpMode{
         script.add(new Wait(new Time(200)));
         script.add(new Drive(OmniDrive.Direction.R, new Distance(800)));
         script.add(new Drive(OmniDrive.Direction.F, new Distance(100)));
-
         script.add(new Wait(new Time(1000)));
     }
 
