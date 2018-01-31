@@ -65,12 +65,12 @@ public class LinearArm {
     }
 
     public void waist(double joystickPosX){
-        waist.setPower(-joystickPosX * 0.25);
+        waist.setPower(-joystickPosX * 0.35);
     }
 
     public void changeClaw(){
         clawClosed = !clawClosed;
-        claw.setPosition(((clawClosed) ? .7 : .9));
+        claw.setPosition(((clawClosed) ? .6 : .9));
     }
 
 }
